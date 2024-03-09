@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import ServicesScreen from './ServicesScreen';
-import BookingScreen from './BookingScreen';
+import ServicesScreen from './screens/services/services';
+import BookingScreen from './screens/services/booking';
 
 const Stack = createStackNavigator();
 
