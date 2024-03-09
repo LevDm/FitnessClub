@@ -1,28 +1,42 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import ServicesScreen from './screens/services/services';
-import BookingScreen from './screens/services/booking';
 
-const Stack = createStackNavigator();
+import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
+
+import ServicesStack from './screens/services/services-stack';
+import UserRecodrsScreen from './screens/user-records/records';
+
+import {
+  OSNavigationBar,
+  ServicesIcon,
+  UserRecordsIcon,
+} from './components/navigations/bottom-bar';
+
+const Tab = createMaterialBottomTabNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Services">
-        <Stack.Screen
-          name="Services"
-          component={ServicesScreen}
-          options={{title: 'Фитнес клуб'}}
+      <Tab.Navigator initialRouteName="ServicesStack">
+        <Tab.Screen
+          name="ServicesStack"
+          component={ServicesStack}
+          options={{
+            tabBarLabel: 'Услуги',
+            tabBarIcon: ServicesIcon,
+          }}
         />
-        <Stack.Screen
-          name="Booking"
-          component={BookingScreen}
-          options={{title: 'Запись на тренировку'}}
+        <Tab.Screen
+          name="Records"
+          component={UserRecodrsScreen}
+          options={{
+            tabBarLabel: 'Мои записи',
+            tabBarIcon: UserRecordsIcon,
+          }}
         />
-      </Stack.Navigator>
+      </Tab.Navigator>
+      <OSNavigationBar />
     </NavigationContainer>
   );
 };
-
 export default App;
