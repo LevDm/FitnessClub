@@ -8,31 +8,41 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {FitnessClass, fitnessClasses} from '../../data';
+import {FitnessClass} from '../../data';
+import {observer} from 'mobx-react-lite';
+import {useStore} from '../../utils/mobx/store-provider';
 
 interface ServicesScreenProps {
   navigation: any;
 }
 
-const ServicesScreen: React.FC<ServicesScreenProps> = ({navigation}) => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.viewWrapper}>
-          {fitnessClasses.map((fitnessClass: FitnessClass) => (
-            <TouchableOpacity
-              key={fitnessClass.id}
-              style={styles.fitnessClassContainer}
-              onPress={() => navigation.navigate('Booking', {fitnessClass})}>
-              <Text style={styles.fitnessClassName}>{fitnessClass.name}</Text>
-              <Text style={styles.fitnessClassPrice}>{fitnessClass.price}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+const ServicesScreen: React.FC<ServicesScreenProps> = observer(
+  ({navigation}) => {
+    const {getServices} = useStore();
+
+    const services = getServices();
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={styles.viewWrapper}>
+            {services.map((value: FitnessClass) => (
+              <TouchableOpacity
+                key={value.id}
+                style={styles.fitnessClassContainer}
+                onPress={() =>
+                  navigation.navigate('Booking', {fitnessClass: value})
+                }>
+                <Text style={styles.fitnessClassName}>{value.name}</Text>
+                <Text style={styles.fitnessClassPrice}>{value.price}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   container: {

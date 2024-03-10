@@ -6,7 +6,7 @@ export interface FitnessClass {
   price: string;
 }
 
-export const fitnessClasses: FitnessClass[] = [
+export const class1: FitnessClass[] = [
   {
     id: 1,
     name: 'Йога',
@@ -63,7 +63,7 @@ import c2_Img from '../../assets/fitness-categories/c2.jpg';
 import c3_Img from '../../assets/fitness-categories/c3.jpg';
 import c4_Img from '../../assets/fitness-categories/c4.jpg';
 
-const FITNESS_CATEGORIES: FitnessCategory[] = [
+export const FITNESS_CATEGORIES: FitnessCategory[] = [
   {
     id: 'cc1',
     title: 'Посмотреть все',
@@ -103,17 +103,17 @@ const FITNESS_CATEGORIES: FitnessCategory[] = [
 type UseData = (
   src: 'categorys' | 'class',
   option?: FitnessClasses,
-) => FitnessCategory[] | FitnessClass[] | undefined;
+) => FitnessCategory[] | FitnessClass[];
 
 export const useData: UseData = (src, option) => {
   switch (`${src}${option ? '-' : ''}${option ?? ''}`) {
     case 'categorys':
       return FITNESS_CATEGORIES;
     case 'class-all':
-      return fitnessClasses;
+      return [...class1, ...class1];
     case 'class-cl1':
-      return fitnessClasses;
+      return class1;
   }
 
-  return;
+  return [];
 };

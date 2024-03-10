@@ -1,44 +1,51 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {FitnessCategory, FitnessClasses} from '../../data/fitness-classes';
+import {FitnessCategory} from '../../data/fitness-classes';
 import {Card, useTheme} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
-export const CategoryCard = (
-  props: FitnessCategory & {
-    onPress: (c: FitnessClasses) => void;
-    format?: 'i1' | 'i2';
+import {observer} from 'mobx-react-lite';
+import {useStore} from '../../utils/mobx/store-provider';
+
+export const CategoryCard = observer(
+  (props: {category: FitnessCategory; format?: 'i1' | 'i2'}) => {
+    const {category, format = 'i2'} = props;
+    const {id, img, title} = category;
+
+    const {setCategory} = useStore();
+
+    const theme = useTheme();
+
+    const navigation = useNavigation();
+
+    const onPress = () => {
+      setCategory(category);
+      navigation.navigate('Services' as never);
+    };
+
+    return (
+      <Card
+        key={id}
+        style={[styles.card, format === 'i1' ? styles.card_i1 : styles.card_i2]}
+        onPress={onPress}>
+        <Card.Cover source={img} style={format === 'i2' && {height: '75%'}} />
+        <Card.Title
+          title={title}
+          titleStyle={
+            format === 'i1' && [
+              styles.cardTitle,
+              {
+                color: theme.colors.onPrimary,
+                textShadowColor: theme.colors.primary,
+              },
+            ]
+          }
+          style={format === 'i1' && styles.cardHeader}
+        />
+      </Card>
+    );
   },
-) => {
-  const {id, img, title, classes, onPress: handler, format = 'i2'} = props;
-
-  const theme = useTheme();
-
-  const onPress = () => {
-    handler(classes);
-  };
-
-  return (
-    <Card
-      key={id}
-      style={[styles.card, format === 'i1' ? styles.card_i1 : styles.card_i2]}
-      onPress={onPress}>
-      <Card.Cover source={img} style={format === 'i2' && {height: '75%'}} />
-      <Card.Title
-        title={title}
-        titleStyle={
-          format === 'i1' && [
-            styles.cardTitle,
-            {
-              color: theme.colors.onPrimary,
-              textShadowColor: theme.colors.primary,
-            },
-          ]
-        }
-        style={format === 'i1' && styles.cardHeader}
-      />
-    </Card>
-  );
-};
+);
 
 const styles = StyleSheet.create({
   card: {

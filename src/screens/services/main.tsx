@@ -1,10 +1,6 @@
 import React from 'react';
 import {StyleSheet, SafeAreaView, ScrollView, View} from 'react-native';
-import {
-  FitnessCategory,
-  FitnessClasses,
-  useData,
-} from '../../data/fitness-classes';
+import {FitnessCategory, useData} from '../../data/fitness-classes';
 import {Text} from 'react-native-paper';
 import {CategoryCard} from '../../components/category-card/category-card';
 
@@ -12,24 +8,19 @@ interface CategoriesScreenProps {
   navigation: any;
 }
 
-const CategoriesScreen: React.FC<CategoriesScreenProps> = ({navigation}) => {
+const CategoriesScreen: React.FC<CategoriesScreenProps> = () => {
   const data = useData('categorys') as FitnessCategory[];
-
-  const pressHandler = (classes: FitnessClasses) => {
-    console.log(classes);
-    navigation.navigate('Services');
-  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <CategoryCard {...data[0]} format="i1" onPress={pressHandler} />
+        <CategoryCard category={data[0]} format="i1" />
         <Text variant="headlineSmall" style={styles.headline}>
           Категории
         </Text>
         <View style={styles.tileContainer}>
           {data.slice(1)?.map(item => (
-            <CategoryCard key={item.id} {...item} onPress={pressHandler} />
+            <CategoryCard key={item.id} category={item} />
           ))}
         </View>
       </ScrollView>
