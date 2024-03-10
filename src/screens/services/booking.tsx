@@ -1,14 +1,7 @@
-import React, {useState} from 'react';
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  View,
-} from 'react-native';
+import React, {useMemo} from 'react';
+import {Controller, FieldErrors, useForm} from 'react-hook-form';
+import {Alert, StyleSheet, ScrollView, SafeAreaView, View} from 'react-native';
+import {Button, Card, HelperText, Text, TextInput} from 'react-native-paper';
 
 interface FitnessClass {
   id: number;
@@ -22,61 +15,171 @@ interface BookingScreenProps {
   route: any;
 }
 
+type IdsForm = 'name' | 'phone' | 'date' | 'time' | 'comment';
+
+type InputAreaProps = {
+  id: IdsForm;
+  label: string;
+
+  required?: boolean;
+
+  errors: FieldErrors<{
+    name: string;
+    phone: string;
+    date: string;
+    time: string;
+    comment: string;
+  }>;
+  control: any;
+};
+
+const InputArea = (props: InputAreaProps) => {
+  const {id, label, control, required = false, errors} = props;
+
+  const currentError = errors[id]?.type ?? false;
+
+  return (
+    <Controller
+      name={id}
+      rules={{required: required}}
+      control={control}
+      render={({field: {onChange, onBlur, value}}) => (
+        <View
+          style={{
+            flex: 1,
+          }}>
+          <TextInput
+            mode="outlined"
+            label={`${label} ${required ? '*' : ''}`}
+            //style={styles.input}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            error={Boolean(currentError)}
+          />
+          <HelperText type="error" visible={Boolean(currentError)}>
+            {currentError === 'required' && 'Поле обязательно'}
+          </HelperText>
+        </View>
+      )}
+    />
+  );
+};
+
+const DEFAULT_FORM = {
+  name: '',
+  phone: '',
+  date: '',
+  time: '',
+  comment: '',
+};
+
 const BookingScreen: React.FC<BookingScreenProps> = ({route}) => {
   const {fitnessClass}: {fitnessClass: FitnessClass} = route.params;
-  const [name, setName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [dateTime, setDateTime] = useState('');
-  const [comment, setComment] = useState('');
 
-  const handleBooking = () => {
-    if (name && phoneNumber && dateTime) {
-      Alert.alert('Успешно', 'Вы записаны на занятие!');
-    } else {
-      Alert.alert('Ошибка', 'Пожалуйста, заполните все поля формы.');
-    }
+  const {
+    handleSubmit,
+    watch,
+    control,
+    formState: {errors},
+  } = useForm({
+    defaultValues: DEFAULT_FORM,
+  });
+
+  const onSubmit = () => {
+    Alert.alert('Успешно', 'Вы записаны на занятие!');
   };
+
+  const watchData = watch();
+
+  const submitDisabled = useMemo(() => {
+    const watchCopy = {...watchData};
+    delete (watchCopy as any).comment;
+
+    const input = Object.values(watchCopy);
+
+    return input.includes('');
+  }, [watchData]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.viewWrapper}>
-          <Text style={styles.fitnessClassName}>{fitnessClass.name}</Text>
-          <Text style={styles.fitnessClassDescription}>
-            {fitnessClass.description}
-          </Text>
-          <Text style={styles.fitnessClassDuration}>
-            {fitnessClass.duration}
-          </Text>
-          <Text style={styles.fitnessClassPrice}>{fitnessClass.price}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Ваше имя"
-            value={name}
-            onChangeText={text => setName(text)}
+      <ScrollView
+        contentContainerStyle={{
+          gap: 16,
+          padding: '4%',
+        }}>
+        <Card>
+          <Card.Title
+            title={fitnessClass.name}
+            titleVariant="titleLarge"
+            subtitle={fitnessClass.description}
+            subtitleNumberOfLines={20}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Номер телефона"
-            value={phoneNumber}
-            onChangeText={text => setPhoneNumber(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Дата и время"
-            value={dateTime}
-            onChangeText={text => setDateTime(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Комментарий к записи"
-            value={comment}
-            onChangeText={text => setComment(text)}
-          />
-          <TouchableOpacity style={styles.button} onPress={handleBooking}>
-            <Text style={styles.buttonText}>Записаться</Text>
-          </TouchableOpacity>
-        </View>
+          <Card.Content style={{marginTop: 8}}>
+            <Text variant="bodyMedium">
+              Продолжительность занятия: {fitnessClass.duration}
+            </Text>
+            <Text variant="bodyMedium">
+              Стоимость занятия: {fitnessClass.price}
+            </Text>
+          </Card.Content>
+        </Card>
+
+        <Card>
+          <Card.Title title={'Форма записи'} />
+          <Card.Content style={{gap: 12}}>
+            <InputArea
+              id="name"
+              label="имя"
+              required
+              control={control}
+              errors={errors}
+            />
+
+            <InputArea
+              id="phone"
+              label="Номер телефона"
+              required
+              control={control}
+              errors={errors}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                gap: 12,
+              }}>
+              <InputArea
+                id="date"
+                label="Дата"
+                required
+                control={control}
+                errors={errors}
+              />
+
+              <InputArea
+                id="time"
+                label="Время"
+                required
+                control={control}
+                errors={errors}
+              />
+            </View>
+
+            <InputArea
+              id="comment"
+              label="Коментарий"
+              control={control}
+              errors={errors}
+            />
+
+            <Button
+              mode="contained"
+              style={{opacity: submitDisabled ? 0.5 : 1}}
+              onPress={handleSubmit(onSubmit)}>
+              Записаться
+            </Button>
+          </Card.Content>
+        </Card>
       </ScrollView>
     </SafeAreaView>
   );
@@ -85,54 +188,6 @@ const BookingScreen: React.FC<BookingScreenProps> = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  viewWrapper: {
-    padding: 20,
-  },
-  fitnessClassName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#333',
-  },
-  fitnessClassDescription: {
-    fontSize: 16,
-    marginBottom: 10,
-    color: '#666',
-  },
-  fitnessClassDuration: {
-    fontSize: 16,
-    marginBottom: 10,
-    color: '#666',
-  },
-  fitnessClassPrice: {
-    fontSize: 18,
-    color: '#444',
-    marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    paddingHorizontal: 20,
-  },
-  button: {
-    backgroundColor: '#6a5acd',
-    borderRadius: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    elevation: 3,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    textAlign: 'center',
   },
 });
 
