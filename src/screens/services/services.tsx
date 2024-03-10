@@ -18,9 +18,9 @@ interface ServicesScreenProps {
 
 const ServicesScreen: React.FC<ServicesScreenProps> = observer(
   ({navigation}) => {
-    const {getServices} = useStore();
+    const {getFiltredServices} = useStore();
 
-    const services = getServices();
+    const services = getFiltredServices();
 
     return (
       <SafeAreaView style={styles.container}>

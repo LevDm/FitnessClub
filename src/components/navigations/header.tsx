@@ -7,6 +7,8 @@ import {StatusBar} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {observer} from 'mobx-react-lite';
+import {useStore} from '../../utils/mobx/store-provider';
 
 type HeaderProps = {
   navigation: StackNavigationProp<ParamListBase, string, undefined>;
@@ -57,14 +59,24 @@ type SearchBarProps = {
   backPress: () => void;
 };
 
-const SearchBar = (props: SearchBarProps) => {
+const SearchBar = observer((props: SearchBarProps) => {
   const {backPress} = props;
+
+  const {setSeachText} = useStore();
 
   const [searchText, setSearchText] = React.useState('');
 
   const searchBackPress = () => {
     setSearchText('');
+    setSeachText('');
     backPress();
+  };
+
+  const changeText = (text: string) => {
+    if (searchText != text) {
+      setSearchText(text);
+      setSeachText(text);
+    }
   };
 
   return (
@@ -72,11 +84,11 @@ const SearchBar = (props: SearchBarProps) => {
       icon={Icon}
       onIconPress={searchBackPress}
       placeholder="Поиск"
-      onChangeText={setSearchText}
+      onChangeText={changeText}
       value={searchText}
     />
   );
-};
+});
 
 export const SearchHeader = (props: HeaderProps) => {
   const {navigation, route, options, back} = props;
