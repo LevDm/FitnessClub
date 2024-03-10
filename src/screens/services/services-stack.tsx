@@ -7,7 +7,7 @@ import BookingScreen from './booking';
 
 const Stack = createStackNavigator();
 
-import {Header} from '../../components/navigations/header';
+import {Header, SearchHeader} from '../../components/navigations/header';
 
 const ServicesStack = () => {
   return (
@@ -24,7 +24,7 @@ const ServicesStack = () => {
       <Stack.Screen
         name="Services"
         component={ServicesScreen}
-        options={{title: 'Услуги'}}
+        options={{title: 'Услуги', header: SearchHeader}}
       />
       <Stack.Screen
         name="Booking"
