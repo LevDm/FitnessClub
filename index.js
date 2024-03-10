@@ -10,7 +10,6 @@ import App from './src/App';
 
 const theme = {
   ...MD3LightTheme,
-
   colors: {
     primary: 'rgb(71, 85, 182)',
     onPrimary: 'rgb(255, 255, 255)',

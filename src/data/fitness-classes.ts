@@ -47,3 +47,73 @@ export const fitnessClasses: FitnessClass[] = [
     price: '900 руб.',
   },
 ];
+
+export type FitnessClasses = 'all' | 'cl1' | 'cl2' | 'cl3' | 'cl4';
+
+export type FitnessCategory = {
+  id: string;
+  title: string;
+  description?: string;
+  img: any;
+  classes: FitnessClasses;
+};
+import all_Img from '../../assets/fitness-categories/all.jpg';
+import c1_Img from '../../assets/fitness-categories/c1.jpg';
+import c2_Img from '../../assets/fitness-categories/c2.jpg';
+import c3_Img from '../../assets/fitness-categories/c3.jpg';
+import c4_Img from '../../assets/fitness-categories/c4.jpg';
+
+const FITNESS_CATEGORIES: FitnessCategory[] = [
+  {
+    id: 'cc1',
+    title: 'Посмотреть все',
+    img: all_Img,
+    classes: 'all',
+  },
+  {
+    id: 'cc2',
+    title: '2',
+    description: '02',
+    img: c1_Img,
+    classes: 'cl1',
+  },
+  {
+    id: 'cc3',
+    title: '3',
+    description: '03',
+    img: c2_Img,
+    classes: 'cl2',
+  },
+  {
+    id: 'cc4',
+    title: '4',
+    description: '04',
+    img: c3_Img,
+    classes: 'cl3',
+  },
+  {
+    id: 'cc5',
+    title: '5',
+    description: '05',
+    img: c4_Img,
+    classes: 'cl4',
+  },
+];
+
+type UseData = (
+  src: 'categorys' | 'class',
+  option?: FitnessClasses,
+) => FitnessCategory[] | FitnessClass[] | undefined;
+
+export const useData: UseData = (src, option) => {
+  switch (`${src}${option ? '-' : ''}${option ?? ''}`) {
+    case 'categorys':
+      return FITNESS_CATEGORIES;
+    case 'class-all':
+      return fitnessClasses;
+    case 'class-cl1':
+      return fitnessClasses;
+  }
+
+  return;
+};
