@@ -10,8 +10,6 @@ interface ServicesScreenProps {
 const UserRecodrsScreen: React.FC<ServicesScreenProps> = (
   props: ServicesScreenProps,
 ) => {
-  console.log(props.navigation);
-
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -26,7 +24,6 @@ const UserRecodrsScreen: React.FC<ServicesScreenProps> = (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: '#f1f1f1',
   },
 });
 
