@@ -1,16 +1,10 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
+import React, {useCallback} from 'react';
+import {StyleSheet, SafeAreaView, FlatList, ListRenderItem} from 'react-native';
 
 import {FitnessClass} from '../../data';
 import {observer} from 'mobx-react-lite';
 import {useStore} from '../../utils/mobx/store-provider';
+import {Card, Text} from 'react-native-paper';
 
 interface ServicesScreenProps {
   navigation: any;
@@ -22,50 +16,61 @@ const ServicesScreen: React.FC<ServicesScreenProps> = observer(
 
     const services = getFiltredServices();
 
+    const onPress = useCallback(
+      (value: FitnessClass) => {
+        navigation.navigate('Booking', {fitnessClass: value});
+      },
+      [navigation],
+    );
+
+    const renderItem: ListRenderItem<FitnessClass> = ({item}) => {
+      return <ServisCard key={item.id} servis={item} onPress={onPress} />;
+    };
+
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <View style={styles.viewWrapper}>
-            {services.map((value: FitnessClass) => (
-              <TouchableOpacity
-                key={value.id}
-                style={styles.fitnessClassContainer}
-                onPress={() =>
-                  navigation.navigate('Booking', {fitnessClass: value})
-                }>
-                <Text style={styles.fitnessClassName}>{value.name}</Text>
-                <Text style={styles.fitnessClassPrice}>{value.price}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
+        <FlatList
+          data={services}
+          renderItem={renderItem}
+          ListEmptyComponent={
+            <Text variant="headlineSmall">Услуги не найдены</Text>
+          }
+          contentContainerStyle={styles.scrollContainer}
+        />
       </SafeAreaView>
     );
   },
 );
 
+type ServisCardProps = {
+  servis: FitnessClass;
+  onPress: (v: FitnessClass) => void;
+};
+const ServisCard = React.memo((props: ServisCardProps) => {
+  const {servis, onPress: handler} = props;
+  const {id, name, price} = servis;
+  const onPress = () => {
+    handler(servis);
+  };
+
+  return (
+    <Card key={id} onPress={onPress} style={styles.card}>
+      <Card.Title title={name} subtitle={price} />
+    </Card>
+  );
+});
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  viewWrapper: {
-    padding: 20,
+  scrollContainer: {
+    gap: 12,
+    padding: '3%',
   },
-  fitnessClassContainer: {
-    marginBottom: 20,
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    elevation: 5,
-  },
-  fitnessClassName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  fitnessClassPrice: {
-    fontSize: 16,
-    color: '#888',
+  card: {
+    width: '100%',
+    height: 'auto',
   },
 });
 
