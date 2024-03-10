@@ -37,7 +37,6 @@ const ServicesScreen: React.FC<ServicesScreenProps> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1f1f1',
   },
   viewWrapper: {
     padding: 20,

@@ -1,5 +1,4 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 
 import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
 
@@ -16,7 +15,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <>
       <Tab.Navigator initialRouteName="ServicesStack">
         <Tab.Screen
           name="ServicesStack"
@@ -36,7 +35,7 @@ const App = () => {
         />
       </Tab.Navigator>
       <OSNavigationBar />
-    </NavigationContainer>
+    </>
   );
 };
 export default App;

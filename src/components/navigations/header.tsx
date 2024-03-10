@@ -1,15 +1,22 @@
 import React from 'react';
 
 import {Appbar, useTheme} from 'react-native-paper';
-import {getHeaderTitle} from '@react-navigation/elements';
+import {getHeaderTitle, HeaderTitleProps} from '@react-navigation/elements';
 import {ParamListBase, RouteProp} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 type HeaderProps = {
-  navigation: any;
+  navigation: StackNavigationProp<ParamListBase, string, undefined>;
   route: RouteProp<ParamListBase, string>;
-  options: any;
-  back?: any;
+  options: {
+    title?: string | undefined;
+    headerTitle?:
+      | string
+      | ((props: HeaderTitleProps) => React.ReactNode)
+      | undefined;
+  };
+  back?: {title: string};
 };
 
 export const Header = (props: HeaderProps) => {
