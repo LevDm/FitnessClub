@@ -24,8 +24,6 @@ const BookingScreen: React.FC<ScreenNavigationProps> = ({
 
   const {isLoading, error, data, updStorage} = useLStorage();
 
-  console.log(isLoading, error, data);
-
   const exit = () => {
     navigation.replace('Categories');
     navigation.navigate('Records');
