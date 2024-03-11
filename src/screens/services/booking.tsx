@@ -1,6 +1,6 @@
 /* eslint-disable curly */
 /* eslint-disable no-extra-boolean-cast */
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 
@@ -18,37 +18,43 @@ const BookingScreen: React.FC<ScreenNavigationProps> = ({
 }) => {
   const {fitnessClass}: {fitnessClass: FitnessClass} = route.params;
 
-  const [visible, setVisible] = React.useState<('success' | 'error') | false>(
-    false,
-  );
+  const [visible, setVisible] = React.useState<{
+    type?: 'success' | 'error';
+    value: boolean;
+  }>({value: false});
 
-  const {isLoading, error, data, updStorage} = useLStorage();
+  const {isLoading, error, data, updStorage, loadStorage} = useLStorage();
+
+  useEffect(() => {
+    loadStorage();
+  }, [loadStorage]);
 
   const exit = () => {
     navigation.replace('Categories');
     navigation.navigate('Records');
   };
 
-  const onSubmit = (value: SuccsesFormValues) => {
+  const onSubmit = async (value: SuccsesFormValues) => {
     if (!isLoading && !Boolean(!!error)) {
       const UserServisRecord = {
         ...value,
+        id: `${data.length}-${new Date().getTime()}`,
         servis: fitnessClass,
       };
 
-      updStorage([...data, UserServisRecord]);
+      await updStorage([...data, UserServisRecord]);
 
-      setVisible('success');
+      setVisible({type: 'success', value: true});
       return true;
     } else {
-      setVisible('error');
+      setVisible({type: 'error', value: true});
       return false;
     }
   };
 
   const hideDialog = () => {
-    if (visible === 'success') exit();
-    setVisible(false);
+    if (visible.type === 'success') exit();
+    setVisible(prev => ({...prev, value: false}));
   };
 
   return (
@@ -66,11 +72,11 @@ const BookingScreen: React.FC<ScreenNavigationProps> = ({
       </SafeAreaView>
 
       <Portal>
-        <Dialog visible={Boolean(visible)} onDismiss={hideDialog}>
+        <Dialog visible={visible.value} onDismiss={hideDialog}>
           <Dialog.Title>
-            {visible === 'success' ? 'Запись удалась!' : 'Ошибка'}
+            {visible.type === 'success' ? 'Запись удалась!' : 'Ошибка'}
           </Dialog.Title>
-          {visible === 'error' && (
+          {visible.type === 'error' && (
             <Dialog.Content>
               <Text>Пропробуйте записаться снова</Text>
             </Dialog.Content>

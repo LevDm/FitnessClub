@@ -1,16 +1,19 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 import {SuccsesFormValues} from '../../components/records-form';
 
 import {FitnessClass} from '../../data/fitness-classes';
 
 const STORAGE_NAME = 'user-servis-records';
 
-export type UserRecords = SuccsesFormValues & {servis: FitnessClass};
+export type UserRecords = SuccsesFormValues & {
+  id: string;
+  status?: string;
+  servis: FitnessClass;
+};
 
 export const useLStorage = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [data, setData] = useState<UserRecords[]>([]);
 
@@ -30,10 +33,6 @@ export const useLStorage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    loadStorage();
-  }, []);
-
   const updStorage = useCallback(async (value: UserRecords[]) => {
     try {
       const jsonValue = JSON.stringify(value);
@@ -45,7 +44,7 @@ export const useLStorage = () => {
   }, []);
 
   return {
-    //loadStorage,
+    loadStorage,
     updStorage,
     data,
     error,

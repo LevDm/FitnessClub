@@ -20,7 +20,7 @@ const DEFAULT_FORM = {
 };
 
 type RecordFormProps = {
-  onSubmit: (value: SuccsesFormValues) => boolean;
+  onSubmit: (value: SuccsesFormValues) => Promise<boolean>;
 };
 
 export const RecordForm = (props: RecordFormProps) => {
@@ -38,7 +38,7 @@ export const RecordForm = (props: RecordFormProps) => {
     defaultValues: DEFAULT_FORM,
   });
 
-  const submit: SubmitHandler<FormValues> = config => {
+  const submit: SubmitHandler<FormValues> = async config => {
     const {date, time} = config;
     const [hours, minutes] = time.split(':').map((v: string) => parseInt(v));
     const checkDate = new Date(date);
@@ -57,7 +57,7 @@ export const RecordForm = (props: RecordFormProps) => {
         message: 'Некорректное значение',
       });
     } else {
-      const res = onSubmit({
+      const res = await onSubmit({
         date: checkDate.toUTCString(),
         name: config.name,
         phone: config.phone,
