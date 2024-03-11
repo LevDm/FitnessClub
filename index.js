@@ -66,6 +66,9 @@ const navTheme = {
 
 import {StoreProvider} from './src/utils/mobx/store-provider';
 
+import {ru, registerTranslation} from 'react-native-paper-dates';
+registerTranslation('ru', ru);
+
 export default function Main() {
   return (
     <PaperProvider theme={theme}>

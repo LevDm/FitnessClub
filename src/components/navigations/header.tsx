@@ -64,7 +64,7 @@ const SearchBar = observer((props: SearchBarProps) => {
 
   const {setSeachText} = useStore();
 
-  const [searchText, setSearchText] = React.useState('');
+  const [searchText, setSearchText] = React.useState<string>('');
 
   const searchBackPress = () => {
     setSearchText('');
@@ -73,7 +73,7 @@ const SearchBar = observer((props: SearchBarProps) => {
   };
 
   const changeText = (text: string) => {
-    if (searchText != text) {
+    if (searchText !== text) {
       setSearchText(text);
       setSeachText(text);
     }
