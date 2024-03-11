@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useCallback, useState} from 'react';
 import {SuccsesFormValues} from '../../components/records-form';
 
-import {FitnessClass} from '../../data/fitness-classes';
+import {FitnessClass} from '../../data';
 
 const STORAGE_NAME = 'user-servis-records';
 

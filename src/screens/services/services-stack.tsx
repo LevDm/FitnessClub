@@ -7,9 +7,9 @@ import BookingScreen from './booking';
 
 const Stack = createStackNavigator();
 
-import {Header, SearchHeader} from '../../components/navigations/header';
+import {Header, SearchHeader} from '../../components';
 
-const ServicesStack = () => {
+export const ServicesStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Categories"
@@ -34,5 +34,3 @@ const ServicesStack = () => {
     </Stack.Navigator>
   );
 };
-
-export default ServicesStack;

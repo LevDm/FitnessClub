@@ -1,11 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {FitnessCategory} from '../../data/fitness-classes';
+import {FitnessCategory} from '../../data';
 import {Card, useTheme} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 
 import {observer} from 'mobx-react-lite';
-import {useStore} from '../../utils/mobx/store-provider';
+import {useStore} from '../../utils/mobx';
 
 export const CategoryCard = observer(
   (props: {category: FitnessCategory; format?: 'i1' | 'i2'}) => {

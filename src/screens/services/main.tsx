@@ -1,14 +1,14 @@
 import React from 'react';
+
 import {StyleSheet, SafeAreaView, ScrollView, View} from 'react-native';
-import {FitnessCategory, useData} from '../../data/fitness-classes';
 import {Text} from 'react-native-paper';
-import {CategoryCard} from '../../components/category-card/category-card';
 
-interface CategoriesScreenProps {
-  navigation: any;
-}
+import {CategoryCard} from '../../components';
 
-const CategoriesScreen: React.FC<CategoriesScreenProps> = () => {
+import {FitnessCategory, useData} from '../../data';
+import {ScreenNavigationProps} from '../types';
+
+const CategoriesScreen: React.FC<ScreenNavigationProps> = () => {
   const data = useData('categorys') as FitnessCategory[];
 
   return (

@@ -8,7 +8,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {observer} from 'mobx-react-lite';
-import {useStore} from '../../utils/mobx/store-provider';
+import {useStore} from '../../utils/mobx';
 
 type HeaderProps = {
   navigation: StackNavigationProp<ParamListBase, string, undefined>;

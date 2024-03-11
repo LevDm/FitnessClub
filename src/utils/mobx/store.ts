@@ -6,7 +6,7 @@ import {
   FitnessCategory,
   FitnessClass,
   useData,
-} from '../../data/fitness-classes';
+} from '../../data';
 
 type Category = Omit<FitnessCategory, 'id'>;
 

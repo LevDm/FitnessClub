@@ -3,14 +3,15 @@
 import React, {useEffect} from 'react';
 
 import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {Button, Dialog, HelperText, Portal, Text} from 'react-native-paper';
 
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {RecordForm, SuccsesFormValues} from '../../components/records-form';
+
+import {RecordForm, SuccsesFormValues, ServisInfo} from '../../components';
 import {ScreenNavigationProps} from '../types';
-import {ServisInfo} from '../../components/servis-info-card/servis-info-card';
+
 import {FitnessClass} from '../../data';
-import {useLStorage} from '../../utils/local-storage/use-lstorage';
-import {Button, Dialog, HelperText, Portal, Text} from 'react-native-paper';
+import {useLStorage} from '../../utils/local-storage';
 
 const BookingScreen: React.FC<ScreenNavigationProps> = ({
   navigation,

@@ -2,14 +2,9 @@ import React from 'react';
 
 import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
 
-import ServicesStack from './screens/services/services-stack';
-import UserRecodrsScreen from './screens/user-records/records';
+import {ServicesStack, UserRecodrsScreen} from './screens';
 
-import {
-  OSNavigationBar,
-  ServicesIcon,
-  UserRecordsIcon,
-} from './components/navigations/bottom-bar';
+import {OSNavigationBar, ServicesIcon, UserRecordsIcon} from './components';
 
 const Tab = createMaterialBottomTabNavigator();
 

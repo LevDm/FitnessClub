@@ -1,1 +1,1 @@
-export * from './fitness-classes';
+export * from './fitness';
