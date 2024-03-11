@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable curly */
 import {observable, action, computed, IObservableValue} from 'mobx';
 import {
   FITNESS_CATEGORIES,

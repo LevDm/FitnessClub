@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable radix */
 import React, {useMemo} from 'react';
@@ -19,7 +20,7 @@ const DEFAULT_FORM = {
 };
 
 type RecordFormProps = {
-  onSubmit: (value: SuccsesFormValues) => void;
+  onSubmit: (value: SuccsesFormValues) => boolean;
 };
 
 export const RecordForm = (props: RecordFormProps) => {
@@ -56,13 +57,13 @@ export const RecordForm = (props: RecordFormProps) => {
         message: 'Некорректное значение',
       });
     } else {
-      onSubmit({
+      const res = onSubmit({
         date: checkDate.toUTCString(),
         name: config.name,
         phone: config.phone,
         comment: config.comment,
       });
-      reset();
+      if (res) reset();
     }
   };
 
